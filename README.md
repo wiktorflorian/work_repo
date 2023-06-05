@@ -24,5 +24,4 @@ Contributions to this repository are welcome! If you have any suggestions, bug f
 
 ## License
 
-This repository is licensed under the **MIT License**. You are free to utilize, modify, and distribute the code in this repository, as long as you comply with the terms of the license.
-
+This repository is licensed under the **[<ins>MIT License</ins>](LICENSE.txt)**. You are free to utilize, modify, and distribute the code in this repository, as long as you comply with the terms of the license.
