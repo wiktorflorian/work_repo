@@ -10,11 +10,21 @@ The **sheets_api** project focuses on utilizing the Google Sheets API to downloa
 + **sheets_api/**: This directory houses the project files related to the Google Sheets API integration.
   + **sheets_api.ipynb**: An IPython Notebook file that showcases the implementation and functionality of the project. It includes detailed explanations, code samples, and demonstrations of downloading data from a sheet and saving it as an Excel file. 
 
-### Requirements
+## CSV to excel [work name]
+
+**Still working and checking if everything is working smothly**
+
+The **CSV to excel** project focuses on saving .csv file to .xlsx whith same structure. Another additional tasks are deleting additional whitespaces and replacing wrong characters with 
+
+### Contents
++ **csv_to_excel**: This directory houses the project files related to saving .csv file to .xlsx with same structure.
+  + **csv_to_excel.ipynb**: An IPython Notebook file that showcases the implementation and functionality of the project. It includes detailed explanations, code samokes, and demonstration of saving .csv to .xlsx. 
+
+## Requirements
 
 To run the **sheets_api** project, ensure you have the following dependences:
 + Python 3.11.3
-+ Required Python libraries (specified in the notebook)
++ Required Python libraries (specified in the notebooks)
 
 Please refer to the notebook for any additional setup instructions or dependencies.
 
