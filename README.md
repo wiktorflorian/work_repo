@@ -10,15 +10,19 @@ The **sheets_api** project focuses on utilizing the Google Sheets API to downloa
 + **sheets_api/**: This directory houses the project files related to the Google Sheets API integration.
   + **sheets_api.ipynb**: An IPython Notebook file that showcases the implementation and functionality of the project. It includes detailed explanations, code samples, and demonstrations of downloading data from a sheet and saving it as an Excel file. 
 
-## CSV to excel [work name]
+## CSV to Excel Conventer
 
-**Still working and checking if everything is working smothly**
+**Currently in progress, ensuring smooth functionality*
 
-The **CSV to excel** project focuses on saving .csv file to .xlsx whith same structure. Another additional tasks are deleting additional whitespaces and replacing wrong characters with 
+**The CSV to Excel Conventer** project was conceived as a solution to address the challenges faced when working with .csv files containing incorrect Polish characters. It was observed that one of the contractors consistently sent .csv files with improperly saved Polish characters, which had to be manually corrected using Excel's find and replace function. Additionally, product names often posed problems due to the presence of commas or other characters.
+
+The primary objective of this project is to automate the conversion of .csv files to .xlsx format while preserving the orginal data structure. By implementing this converter, the need for manual intervention to correct Polish characters and handle product name issues will be eliminated. Futhermore, the converter will ensure the seamless transfer of data from .csv files to .xlsx files, facilitating more efficient data management.
 
 ### Contents
 + **csv_to_excel**: This directory houses the project files related to saving .csv file to .xlsx with same structure.
   + **csv_to_excel.ipynb**: An IPython Notebook file that showcases the implementation and functionality of the project. It includes detailed explanations, code samokes, and demonstration of saving .csv to .xlsx. 
+
+**The CSV to Excel Converter** project aims to streamline the data conversion process and improve data integrity by automating the correction of Polish characters and handling product name issues. By implementing this solution, users will experience a more efficient and accurate data transformation process, enabling them to focus on their core tasks with enanced productivity.
 
 ## Requirements
 
