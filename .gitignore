@@ -4,3 +4,5 @@ sheets_api/remote_dir.txt
 sheets_api/token.json
 sellout_api/credentials.py
 semstrat_transformer/semstrat/
+semstrat_transformer/output.xlsx
+semstrat_transformer/config.py
