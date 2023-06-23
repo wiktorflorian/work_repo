@@ -6,5 +6,5 @@ sellout_api/credentials.py
 semstrat_transformer/semstrat/
 semstrat_transformer/output.xlsx
 semstrat_transformer/config.py
-sellout_api/.csv
+sellout_api/*.csv
 sellout_api/output/
