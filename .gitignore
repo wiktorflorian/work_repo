@@ -2,9 +2,10 @@ sheets_api/config.txt
 sheets_api/credentials.json
 sheets_api/remote_dir.txt
 sheets_api/token.json
-sellout_api/credentials.py
+data_loader_sellout/credentials.py
 semstrat_transformer/semstrat/
 semstrat_transformer/output.xlsx
 semstrat_transformer/config.py
-sellout_api/*.csv
-sellout_api/output/
+data_loader_sellout/*.csv
+data_loader_sellout/output/
+**/__pycache__/
