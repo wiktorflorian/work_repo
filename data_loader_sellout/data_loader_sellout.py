@@ -76,7 +76,7 @@ for page in range(1, num_pages + 1):
                 client['additional']['3']
             ]
             clients.append(client_info)
-            
+
 # List to store attachments, rewards, and operations data
 attachments = []
 rewards = []
@@ -164,26 +164,61 @@ operations_df['client_id'] = 'BB_' + operations_df['client_id']
 operations_df = operations_df[operations_df['tag'] != '']
 
 # Extract product information from the description column
-new_rows = []
-pattern = r'(\d+)x(.*?) - (\d{7})'
+rows = []
+
+# Define regex patterns for two possible formats of product information
+pattern1 = r'(\d+)x(.*?) - (\d{7})'
+pattern2 = r'(\d+)x(.*?) -  (\d{7})'
+
+# Iterate over each row in the operations DataFrame
 for _, row in operations_df.iterrows():
+    # Extract relevant fields from the row
     client_id = row['client_id']
     operation = row['type']
     date = row['date_add']
     description = row['description']
+    # Split the description into individual product strings using a regex pattern
+    products = re.split(r',(?=\d+x)', description)
 
-    if description is None:
-        continue
-
-    products = re.findall(pattern, description)
+    # Process each product string
     for product in products:
-        quantity = product[0]
-        product_name = product[1]
-        product_id = product[2]
+        # Try to match the product string with the first patter
+        match1 = re.match(pattern1, product.strip())
 
-        new_row = [client_id, operation, date, product_id, product_name, quantity]
-        new_rows.append(new_row)
+        # Try to match the product string with the second pattern
+        match2 = re.match(pattern2, product.strip())
+
+        # If match 1 is successful, extract the product information
+        if match1:
+            quantity = match1.group(1)
+            product_name = match1.group(2)
+            product_id = match1.group(3)
+
+            matched_row = [client_id, operation, date, product_id, product_name, quantity]
+            rows.append(matched_row)
+        
+        # If match2 is successful, extract the product information
+        elif match2:
+            quantity = match2.group(1)
+            product_name = match2.group(2)
+            product_id = match2.group(3)
+
+            matched_row = [client_id, operation, date, product_id, product_name, quantity]
+            rows.append(matched_row)
+            
+        # If neither match is successful, handle the unmatched product
+        else:
+            # Split the product string to extract quantity and product name
+            product_parts = product.split('x', 1)
+            quantity = product_parts[0]
+            product_name = product_parts[1].strip().replace(' - -', '')
+            product_name = product_name.rsplit(' -', 1)[0] if product_name.endswith(' -') else product_name
+            product_id = None
+            unmatched_row = [client_id, operation, date, product_id, product_name, quantity]
+            rows.append(unmatched_row)
 
 # Create a DataFrame for products data
-products_df = pd.DataFrame(new_rows, columns=['client_id', 'operation', 'date', 'product_id', 'product_name', 'quantity'])
-products_df.to_excel(os.path.join(output_path, 'sellout_products.xlsx'), index=False)
+matched_df = pd.DataFrame(rows, columns=['client_id', 'operation', 'date', 'product_id', 'product_name', 'quantity'])
+
+# Save the products data to an Excel file
+matched_df.to_excel(os.path.join(output_path, 'sellout_products.xlsx'), index=False)
