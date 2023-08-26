@@ -160,9 +160,18 @@ operations_df = pd.DataFrame(operations)
 operations_df.columns = operations_columns
 operations_df['client_id'] = 'BB_' + operations_df['client_id']
 
+# Keep rows where type is add
+operations_df = operations_df[operations_df['type'] == 'add']
 # Drop rows where tag is empty
 operations_df = operations_df[operations_df['tag'] != '']
-
+# Drop rows which contains 'quiz' in description
+operations_df = operations_df[~operations_df['description'].str.contains('quiz', case=False)]
+# Drop rows which contains 'ankiety' in description
+operations_df = operations_df[~operations_df['description'].str.contains('ankiety', case=False)]
+# Drop rows which contains 'zwrot' in description
+operations_df = operations_df[~operations_df['description'].str.contains('zwrot', case=False)]
+# Drop rows which contains 'Nowy klient' in description
+operations_df = operations_df[~operations_df['description'].str.contains('Nowy klient', case=False)]
 # Extract product information from the description column
 rows = []
 
@@ -217,8 +226,55 @@ for _, row in operations_df.iterrows():
             unmatched_row = [client_id, operation, date, product_id, product_name, quantity]
             rows.append(unmatched_row)
 
+
 # Create a DataFrame for products data
 matched_df = pd.DataFrame(rows, columns=['client_id', 'operation', 'date', 'product_id', 'product_name', 'quantity'])
 
+# Change data types
+matched_df['product_id'] = matched_df['product_id'].fillna(0).astype('int32')
+matched_df['quantity'] = matched_df['quantity'].fillna(0).astype('int32')
+
+# Define the pattern with escaped characters
+pattern = r'\(.*?,.*?\)'
+
+# Use str.contains() to filter rows that match the pattern
+matched_rows = matched_df[matched_df['product_name'].str.contains(pattern, case=False, regex=True)]
+
+# Use ~ to filter rows that do not match the pattern
+not_matched_rows = matched_df[~matched_df['product_name'].str.contains(pattern, case=False, regex=True)]
+
+# Define the pattern to remove from 'product_name'
+patterns_to_remove = [
+    'cała gama 1 ',
+    'cała gama 2 ',
+    'cała gama ',
+    'pielęgnacja 1 '
+    'pielęgnacja 2 ',
+    'Codzienna pielęgnacja 1 ',
+    'Codzienna pielęgnacja 2 '
+]
+
+# Remove the specified patterns from 'product_name'
+for pattern in patterns_to_remove:
+    matched_rows.loc[:, 'product_name'] = matched_rows['product_name'].str.replace(pattern, '')
+
+exploded_rows = []
+
+# Iterate through matched rows
+for index, row in matched_rows.iterrows():
+    product_name = row['product_name']
+    values = product_name.split(', ')
+    part_before_parentheses = product_name.split('(')[0].strip() 
+    for value in values:
+        new_row = row.copy()
+        new_row['product_name'] = f"{part_before_parentheses} {value}"
+        new_row['product_name'] = new_row['product_name'].replace('(', '').replace(')', '')
+        exploded_rows.append(new_row)
+
+# Create a new DataFrame from the exploded rows
+exploded_df = pd.DataFrame(exploded_rows)
+
+result_df = pd.concat([not_matched_rows, exploded_df], ignore_index=True)
+
 # Save the products data to an Excel file
-matched_df.to_excel(os.path.join(output_path, 'sellout_products.xlsx'), index=False)
+result_df.to_excel(os.path.join(output_path, 'sellout_products.xlsx'), index=False)
